@@ -143,7 +143,7 @@ func (c *JSMClient) GetServiceByName(ctx context.Context, name string) (*Service
 		} `graphql:"devOpsServices(cloudId: $cloudId, filter: { nameContains: $name })"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"cloudId": graphql.String(c.CloudID),
 		"name":    graphql.String(name),
 	}
@@ -211,7 +211,7 @@ func (c *JSMClient) CreateService(ctx context.Context, req *CreateServiceRequest
 	}
 
 	// pass the input to the mutation
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": input,
 	}
 
@@ -246,7 +246,7 @@ func (c *JSMClient) GetTierIDByLevel(ctx context.Context, level int) (string, er
 		} `graphql:"devOpsServiceTiers(cloudId: $cloudId)"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"cloudId": graphql.String(c.CloudID),
 	}
 
@@ -303,7 +303,7 @@ func (c *JSMClient) UpdateService(ctx context.Context, req *UpdateServiceRequest
 		},
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"input": input,
 	}
 
@@ -348,7 +348,7 @@ func (c *JSMClient) CreateOpsgenieTeamRelationship(ctx context.Context, serviceI
 		} `graphql:"createDevOpsServiceAndOpsgenieTeamRelationship(input: {cloudId: $cloudId, serviceId: $serviceId, opsgenieTeamId: $teamId})"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"cloudId":   graphql.ID(c.CloudID),
 		"serviceId": graphql.ID(serviceID),
 		"teamId":    graphql.ID(teamID),
@@ -384,7 +384,7 @@ func (c *JSMClient) GetOpsgenieTeamIDByName(ctx context.Context, name string) (s
 		} `graphql:"opsgenie"`
 	}
 
-	variables := map[string]interface{}{
+	variables := map[string]any{
 		"cloudId": graphql.ID(c.CloudID),
 	}
 
