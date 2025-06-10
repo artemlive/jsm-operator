@@ -118,7 +118,7 @@ func main() {
 	}
 
 	if jsmGraphQLURL == "" {
-		setupLog.Error(nil, "JSM GraphQL URL is required, the format should be https://<your-domain>.atlassian.net/gateway/api/graphql")
+		setupLog.Error(nil, "JSM GraphQL URL is required, the format should be https://api.atlassian.com/graphql")
 		os.Exit(1)
 	}
 
