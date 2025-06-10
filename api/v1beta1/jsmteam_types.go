@@ -35,7 +35,8 @@ type JSMTeamSpec struct {
 // JSMTeamStatus defines the observed state of JSMTeam.
 type JSMTeamStatus struct {
 	// The resolved or confirmed team ARI
-	ID string `json:"id,omitempty"`
+	ID                 string `json:"id,omitempty"`
+	ObservedGeneration int64  `json:"observedGeneration,omitempty"`
 }
 
 // +kubebuilder:object:root=true

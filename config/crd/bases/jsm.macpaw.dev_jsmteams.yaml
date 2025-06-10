@@ -54,6 +54,9 @@ spec:
               id:
                 description: The resolved or confirmed team ARI
                 type: string
+              observedGeneration:
+                format: int64
+                type: integer
             type: object
         type: object
     served: true

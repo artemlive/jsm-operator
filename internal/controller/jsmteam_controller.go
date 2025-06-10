@@ -21,10 +21,13 @@ import (
 	"time"
 
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/util/workqueue"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	jsmv1beta1 "github.com/artemlive/jsm-operator/api/v1beta1"
 	jsmclient "github.com/artemlive/jsm-operator/internal/client"
@@ -81,8 +84,10 @@ func (r *JSMTeamReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 		}
 	}
 
-	if team.Status.ID != resolvedID {
+	if team.Status.ID != resolvedID || team.Status.ObservedGeneration != team.ObjectMeta.Generation {
 		team.Status.ID = resolvedID
+		team.Status.ObservedGeneration = team.ObjectMeta.Generation
+
 		if err := r.Status().Update(ctx, &team); err != nil {
 			logger.Error(err, "unable to update JSMTeam status")
 			return ctrl.Result{}, err
@@ -90,12 +95,18 @@ func (r *JSMTeamReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 	}
 
 	logger.Info("successfully synced JSMTeam ID to status", "name", req.NamespacedName, "id", resolvedID, "teamName", teamName)
-	return ctrl.Result{RequeueAfter: 24 * time.Hour}, nil
+	return ctrl.Result{}, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.
 func (r *JSMTeamReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
+		WithOptions(controller.Options{
+			RateLimiter: workqueue.NewTypedItemExponentialFailureRateLimiter[reconcile.Request](
+				20*time.Second,
+				5*time.Minute,
+			),
+		}).
 		For(&jsmv1beta1.JSMTeam{}).
 		WithEventFilter(predicate.Or(predicate.GenerationChangedPredicate{}, predicate.AnnotationChangedPredicate{})).
 		Named("jsmteam").
