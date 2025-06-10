@@ -1,0 +1,35 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - jsm.macpaw.dev
+  resources:
+  - jsmservices
+  - jsmteams
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - jsm.macpaw.dev
+  resources:
+  - jsmservices/finalizers
+  - jsmteams/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - jsm.macpaw.dev
+  resources:
+  - jsmservices/status
+  - jsmteams/status
+  verbs:
+  - get
+  - patch
+  - update

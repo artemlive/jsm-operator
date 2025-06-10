@@ -1,0 +1,10 @@
+apiVersion: jsm.macpaw.dev/v1beta1
+kind: JSMTeam
+metadata:
+  labels:
+    app.kubernetes.io/name: jsm-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: jsmteam-sample
+spec:
+  name: SRE Team
+  id: "ari:cloud:opsgenie:<cloudId>:team/<teamId>"
