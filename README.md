@@ -147,14 +147,6 @@ These can be passed as command-line flags or populated via a Kubernetes secret/c
 
 ---
 
-## 📈 Metrics and Health Probes
-
-- Metrics endpoint: `:8443` (HTTPS) or `:8080` (HTTP, if disabled TLS)
-- Health probes: exposed at `:8081` by default
-- HTTP/2 is disabled by default due to security concerns (can be toggled with `--enable-http2`)
-
----
-
 ## 🛠 Dev Notes
 
 - Uses controller-runtime and Kubebuilder
