@@ -92,20 +92,29 @@ func main() {
 		Development: true,
 	}
 
-	defaultJSMApiToken := os.Getenv("JSM_API_TOKEN")
 	defaultJSMGraphQLURL := os.Getenv("JSM_GRAPHQL_URL")
 	defaultJSMOpsRestURL := os.Getenv("JSM_OPS_REST_URL")
-	defaultJSMCloudID := os.Getenv("JSM_CLOUD_ID")
 	if defaultJSMOpsRestURL == "" {
 		defaultJSMOpsRestURL = "https://api.atlassian.com/jsm/ops/api"
 	}
-	defaultJSMUsername := os.Getenv("JSM_USERNAME")
 
-	flag.StringVar(&jsmApiToken, "jsm-api-token", defaultJSMApiToken, "The JSM API token.")
+	flag.StringVar(&jsmApiToken, "jsm-api-token", "", "The JSM API token.")
 	flag.StringVar(&jsmGraphQLURL, "jsm-graphql-url", defaultJSMGraphQLURL, "The JSM GraphQL API URL. ")
-	flag.StringVar(&jsmCloudID, "jsm-cloud-id", defaultJSMCloudID, "The Atlassian Cloud ID. ")
+	flag.StringVar(&jsmCloudID, "jsm-cloud-id", "", "The Atlassian Cloud ID. ")
 	flag.StringVar(&jsmOpsRestURL, "jsm-rest-url", defaultJSMOpsRestURL, "The JSM REST API URL. ")
-	flag.StringVar(&jsmUsername, "jsm-username", defaultJSMUsername, "The JSM username. This is used for authentication with the JSM API. ")
+	flag.StringVar(&jsmUsername, "jsm-username", "", "The JSM username. This is used for authentication with the JSM API. ")
+
+	if jsmApiToken == "" {
+		jsmApiToken = os.Getenv("JSM_API_TOKEN")
+	}
+
+	if jsmCloudID == "" {
+		jsmCloudID = os.Getenv("JSM_CLOUD_ID")
+	}
+
+	if jsmUsername == "" {
+		jsmUsername = os.Getenv("JSM_USERNAME")
+	}
 
 	opts.BindFlags(flag.CommandLine)
 	flag.Parse()
